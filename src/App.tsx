@@ -414,7 +414,7 @@ export const App: React.FC = () => {
                 <a
                   key={value}
                   href={href}
-                  data-cy={`FilterLink${value}`}
+                  data-cy={`FilterLink${name}`}
                   className={classNames(
                     "filter__link",
                     {
