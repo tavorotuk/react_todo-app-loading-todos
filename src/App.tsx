@@ -59,7 +59,8 @@ export const App: React.FC = () => {
   });
 
   const filterLinks = Object.values(FilterType).map(type => ({
-    type,
+    name: type[0].toUpperCase() + type.slice(1),
+    value: type,
     href: `#/${type === FilterType.All ? '' : type.toLowerCase()}`,
   }));
   // -------------------------------------------------------------------------
@@ -409,20 +410,20 @@ export const App: React.FC = () => {
             </span>
 
             <nav className="filter" data-cy="Filter">
-              {filterLinks.map(({ type, href }) => (
+              {filterLinks.map(({ name, value, href }) => (
                 <a
-                  key={type}
+                  key={value}
                   href={href}
-                  data-cy={`FilterLink${type}`}
+                  data-cy={`FilterLink${value}`}
                   className={classNames(
                     "filter__link",
                     {
-                      selected: filterBy === type
+                      selected: filterBy === value
                     }
                   )}
-                  onClick={() => setFilterBy(type)}
+                  onClick={() => setFilterBy(value)}
                 >
-                  {type}
+                  {name}
                 </a>
               ))}
             </nav>
