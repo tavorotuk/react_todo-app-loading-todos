@@ -57,6 +57,11 @@ export const App: React.FC = () => {
         return true;
     }
   });
+
+  const filterLinks = Object.values(FilterType).map(type => ({
+    type,
+    href: `#/${type === FilterType.All ? '' : type.toLowerCase()}`,
+  }));
   // -------------------------------------------------------------------------
   // #endregion DERIVED VARIABLES
 
@@ -246,6 +251,17 @@ export const App: React.FC = () => {
     setEditingTodoId(null);
   };
 
+  const handleEditSubmit = (event: React.FormEvent, todoId: number) => {
+    event.preventDefault();
+    handleSaveEdit(todoId);
+  };
+
+  const handleEditKeyUp = (event: React.KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      handleCancelEdit();
+    }
+  };
+
   // -------------------------------------------------------------------------
   // #endregion HANDLERS
 
@@ -309,25 +325,16 @@ export const App: React.FC = () => {
               </label>
 
               {editingTodoId === todo.id ? (
-                <form
-                  onSubmit={e => {
-                    e.preventDefault();
-                    handleSaveEdit(todo.id);
-                  }}
-                >
+                <form onSubmit={event => handleEditSubmit(event, todo.id)}>
                   <input
                     data-cy="TodoTitleField"
                     type="text"
                     className="todo__title-field"
                     placeholder="Empty todo will be deleted"
                     value={editQuery}
-                    onChange={(e) => setEditQuery(e.target.value)}
+                    onChange={event => setEditQuery(event.target.value)}
                     onBlur={() => handleSaveEdit(todo.id)}
-                    onKeyUp={(e) => {
-                      if (e.key === 'Escape') {
-                        handleCancelEdit();
-                      }
-                    }}
+                    onKeyUp={handleEditKeyUp}
                     autoFocus
                   />
                 </form>
@@ -402,47 +409,22 @@ export const App: React.FC = () => {
             </span>
 
             <nav className="filter" data-cy="Filter">
-              <a
-                href="#/"
-                data-cy="FilterLinkAll"
-                className={classNames(
-                  "filter__link",
-                  {
-                    selected: filterBy === FilterType.All
-                  }
-                )}
-                onClick={() => setFilterBy(FilterType.All)}
-              >
-                All
-              </a>
-
-              <a
-                href="#/active"
-                data-cy="FilterLinkActive"
-                className={classNames(
-                  "filter__link",
-                  {
-                    selected: filterBy === FilterType.Active
-                  }
-                )}
-                onClick={() => setFilterBy(FilterType.Active)}
-              >
-                Active
-              </a>
-
-              <a
-                href="#/completed"
-                data-cy="FilterLinkCompleted"
-                className={classNames(
-                  "filter__link",
-                  {
-                    selected: filterBy === FilterType.Completed
-                  }
-                )}
-                onClick={() => setFilterBy(FilterType.Completed)}
-              >
-                Completed
-              </a>
+              {filterLinks.map(({ type, href }) => (
+                <a
+                  key={type}
+                  href={href}
+                  data-cy={`FilterLink${type}`}
+                  className={classNames(
+                    "filter__link",
+                    {
+                      selected: filterBy === type
+                    }
+                  )}
+                  onClick={() => setFilterBy(type)}
+                >
+                  {type}
+                </a>
+              ))}
             </nav>
 
             <button
