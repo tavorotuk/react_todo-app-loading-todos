@@ -1,4 +1,3 @@
-import './Loader.scss';
 import React from 'react';
 import classNames from 'classnames';
 
