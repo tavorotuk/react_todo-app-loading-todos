@@ -3,3 +3,9 @@ export enum FilterType {
   Active = 'active',
   Completed = 'completed',
 }
+
+export interface FilterLink {
+  name: string;
+  value: FilterType;
+  href: string;
+}

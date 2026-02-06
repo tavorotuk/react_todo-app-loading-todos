@@ -1,3 +1,4 @@
+import './UserWarning.scss';
 import React from 'react';
 
 export const UserWarning: React.FC = () => (
