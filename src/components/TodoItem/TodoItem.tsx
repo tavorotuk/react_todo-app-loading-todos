@@ -38,6 +38,12 @@ export const TodoItem: React.FC<Props> = ({
   onToggle,
   onDelete,
 }) => {
+  const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      onCancel();
+    }
+  };
+
   return (
     <>
       <div
@@ -67,11 +73,7 @@ export const TodoItem: React.FC<Props> = ({
               value={tempTitle}
               onChange={onChange}
               onBlur={onSave}
-              onKeyUp={e => {
-                if (e.key === 'Escape') {
-                  onCancel();
-                }
-              }}
+              onKeyUp={handleKeyUp}
               autoFocus
             />
           </form>
